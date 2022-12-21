@@ -19,19 +19,27 @@ var notes []Note
 
 func getAllNotes(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
 	json.NewEncoder(w).Encode(notes)
 }
 
 func postNote(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("Endpoint hit")
 	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
 	var note Note
-	_ = json.NewDecoder(r.Body).Decode(&note)
+	err := json.NewDecoder(r.Body).Decode(&note)
+	if err != nil {
+		http.Error(w, err.Error(), 400)
+		return
+	}
 	notes = append(notes, note)
-	json.NewEncoder(w).Encode(note)
+	fmt.Println(notes)
 }
 
 func updateNote(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
 	params := mux.Vars(r)
 	// loop over the notes, range
 	//delete the note with the name that we have sent
@@ -53,6 +61,7 @@ func updateNote(w http.ResponseWriter, r *http.Request) {
 
 func deleteNote(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
 	params := mux.Vars(r)
 	for index, item := range notes {
 
