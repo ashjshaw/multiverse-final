@@ -1,6 +1,8 @@
-
+import Form from "../components/form/form"
 function App() {
-  return
+  return(
+    <Form />
+  )
 }
 
 export default App
